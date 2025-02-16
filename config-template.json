@@ -1,5 +1,10 @@
 {
-  "channel_type": "wx",
+  "channel_type": "gewechat",
+  "gewechat_app_id": "",
+  "gewechat_token": "",
+  "gewechat_base_url": "",
+  "gewechat_callback_url": "",
+  "gewechat_download_url": "",
   "model": "",
   "open_ai_api_key": "YOUR API KEY",
   "claude_api_key": "YOUR API KEY",
