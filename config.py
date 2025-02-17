@@ -215,6 +215,12 @@ class Config(dict):
             return default
         except Exception as e:
             raise e
+            
+    def set(self, key, value):
+        try:
+            self[key] = value
+        except Exception as e:
+            raise e
 
     # Make sure to return a dictionary to ensure atomic
     def get_user_data(self, user) -> dict:
@@ -306,6 +312,19 @@ def load_config():
 
     config.load_user_datas()
 
+def save_config():
+    global config
+    config_path = "./config.json"
+    try:
+        config_dict = dict(config)  # 将Config对象转换为普通字典
+        # 创建一个按键排序的有序字典
+        sorted_config = {key: config_dict[key] for key in sorted(config_dict.keys())}
+        with open(config_path, "w", encoding="utf-8") as f:
+            json.dump(sorted_config, f, indent=4, ensure_ascii=False)
+            logger.info("[Config] Configuration saved.")
+    except Exception as e:
+        logger.error(f"[Config] Save configuration error: {e}")
+
 
 def get_root():
     return os.path.dirname(os.path.abspath(__file__))
@@ -362,7 +381,8 @@ def pconf(plugin_name: str) -> dict:
     :param plugin_name: 插件名称
     :return: 该插件的配置项
     """
-    return plugin_config.get(plugin_name.lower())
+    # 如果插件名称作为key获取不到，则尝试使用小写名称
+    return plugin_config.get(plugin_name) or plugin_config.get(plugin_name.lower())
 
 
 # 全局配置，用于存放全局生效的状态

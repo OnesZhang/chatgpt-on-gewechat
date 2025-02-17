@@ -12,7 +12,7 @@ ENV BUILD_PREFIX=/app
 ADD . ${BUILD_PREFIX}
 
 RUN apt-get update \
-    &&apt-get install -y --no-install-recommends bash ffmpeg espeak libavcodec-extra\
+    &&apt-get install -y --no-install-recommends bash ffmpeg espeak libavcodec-extra dos2unix\
     && cd ${BUILD_PREFIX} \
     && cp config-template.json config.json \
     && /usr/local/bin/python -m pip install --no-cache --upgrade pip \
@@ -29,6 +29,7 @@ RUN apt-get update \
 WORKDIR ${BUILD_PREFIX}
 
 ADD docker/entrypoint.sh /entrypoint.sh
+RUN dos2unix /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh \
     && mkdir -p /home/noroot \

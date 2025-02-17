@@ -3,9 +3,9 @@ services:
   gewe:
     image: registry.cn-hangzhou.aliyuncs.com/gewe/gewe:latest
     container_name: gewe
-    # ports:
-    #   - "2531:2531"
-    #   - "2532:2532"
+    ports:
+      - "2531:2531"
+      - "2532:2532"
     volumes:
       - ../gewechat/temp:/root/temp
     privileged: true
@@ -16,19 +16,15 @@ services:
         ipv4_address: 172.33.0.32
 
   chatgpt-on-gewechat:
-    build:
-      context: .  # This points to the directory containing the Dockerfile
-      dockerfile: ./docker/Dockerfile.latest  # Path to the Dockerfile you want to build
-      args:
-        name: app  # Pass the build argument
+    image: crpi-xcrdbvalz21m1xhf.cn-beijing.personal.cr.aliyuncs.com/oneszhang/chatgpt-on-gewechat:v1.7.3
     container_name: chatgpt-on-gewechat
     security_opt:
       - seccomp:unconfined
     environment:
       TZ: 'Asia/Shanghai'
-    # ports:
-    #   - "7860:7860"
-    #   - "9919:9919" # gewechat 回调服务端口
+    ports:
+      - "7860:7860"
+      - "9919:9919" # gewechat 回调服务端口
     volumes:
       - ../config.json:/app/config.json
       - ../plugins:/app/plugins
